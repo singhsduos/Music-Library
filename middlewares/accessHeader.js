@@ -1,6 +1,5 @@
 const config = require('config');
 const env_url = config.get('CONFIGURATION.APIURL');
-const front_url = config.get('CONFIGURATION.FRONTBASEURL');
 
 exports.accessHeaderMiddleware = (req, res, next) => {
   try {
@@ -8,10 +7,7 @@ exports.accessHeaderMiddleware = (req, res, next) => {
       throw new Error('Site URL not configured in environment');
     }
 
-    const allowedOrigins = [
-      'https://mydevelopercode.myshopify.com',
-      'https://sis1318.devsparxit.com'
-    ];
+    const allowedOrigins = [env_url];
     const origin = req.headers.origin;
 
     // if (allowedOrigins.includes(origin)) {

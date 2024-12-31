@@ -1,7 +1,9 @@
 const config = require('config');
 const express = require('express');
-const { BSPPaymentsService } = require('../services/permission.service');
+const { PermissionsService } = require('../services/permission.service');
 const errorHandler = require('../utils/errorHandler.util');
+const authenticateRequest = require("../middlewares/authenticateRequest");
+
 class PermissionController {
   constructor() {
     this.path = '/permission';
@@ -10,7 +12,7 @@ class PermissionController {
   }
 
   initRoutes() {
-    this.router.post('/add', this.addPermission);
+    this.router.post('/add', authenticateRequest, this.addPermission);
   }
 
   async addPermission(req, res, next) {

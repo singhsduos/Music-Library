@@ -1,11 +1,21 @@
 const config = require('config')
 const { ErrorLog } = require('../models/errorLogs.model')
+const { Permission } = require('../models/permission.model')
 const env_url = config.get('CONFIGURATION.APIURL')
 
 class Permissions {
-  async initializeBSPPayment (req, res) {
+  async add (req, res) {
 
     try {
+      const { role, permissions } = req.body;
+      const existingPermission = await Permission.findOne({ role });
+      if (existingPermission) {
+        existingPermission.permissions = permissions;
+        await existingPermission.save();
+      } else {
+        await new Permission({ role, permissions }).save();
+      }
+      res.status(200).send({ message: "Permissions updated successfully" });
 
     } catch (error) {
       console.error('Error initializing', error.message)

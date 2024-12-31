@@ -3,13 +3,13 @@
     "JWTPRIVATEKEY": "Music-App-_sdmnbcscksncnsdc@#12fnsfnsY&",
     "JWTPRIVATERESETKEY": "3sd%#fsr232!$%#yrtyezdev_secret",
     "MONGODB": {
-      "MONGO_URL": "mongodb://10.0.2.168:27017/",
-      "DB_NAME": "SIS1318"
-    },
+      "MONGO_URL": "mongodb+srv://ns9628491678:Ns@7268820306@dev-cluster.ynhoo.mongodb.net/?retryWrites=true&w=majority&appName=dev-cluster",
+      "DB_NAME": "Music-APP"
+  },
     "PORT": 1002
   },
   "CONFIGURATION": {
-    "APIURL": "https://sis1318.devsparxit.com"
+    "APIURL": "http://localhost:1002"
   },
   "EXPIRYTIME": "30d",
   "RESETPASSWORDTOKENEXPIRYTIME": "10m"
