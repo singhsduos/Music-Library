@@ -3,6 +3,7 @@ const express = require('express');
 const { AuthService } = require('../services/auth.service');
 const authenticateRequest = require("../middlewares/authenticateRequest");
 const { ErrorHandler } = require('../middlewares/error-handler');
+const { validateToken } = require('../middlewares/validateToken');
 
 class AuthController {
   constructor() {
@@ -14,6 +15,7 @@ class AuthController {
   initRoutes() {
     this.router.post('/signup', this.signUpUser);
     this.router.post('/login', this.signInUser);
+    this.router.get('/logout', validateToken, this.logoutUser);
   }
 
   async signUpUser(req, res, next) {
@@ -54,6 +56,35 @@ class AuthController {
       });
     } catch (error) {
       console.log('User Login error: ', error.message);
+
+      if (error instanceof ErrorHandler) {
+        return res.status(error.statusCode).json({
+          status: error.statusCode,
+          data: null,
+          message: error.message,
+          error: null,
+        });
+      }
+
+      next(error);
+    }
+  }
+  async logoutUser(req, res, next) {
+    try {
+      const result = await AuthService.logout(req);
+
+      if (result) {
+        return res.status(200).json({
+          status: 200,
+          data: null,
+          message: 'User logged out successfully.',
+          error: null,
+        });
+      }
+
+      next(new ErrorHandler(400, 'Bad Request'));
+    } catch (error) {
+      console.log('User Logout error: ', error.message);
 
       if (error instanceof ErrorHandler) {
         return res.status(error.statusCode).json({

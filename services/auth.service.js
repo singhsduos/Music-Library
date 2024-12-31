@@ -60,6 +60,22 @@ class AuthService {
       throw new ErrorHandler(error.statusCode || 500, error.message, error);
     }
   }
+  async logout(req) {
+    const token = req.headers.authorization?.split(' ')[1];
+
+    if (!token) {
+      throw new ErrorHandler(400, 'Bad Request, Missing Authorization Token.');
+    }
+
+    try {
+      // we can add logic here, whatever requirement of ours like if we are using ejs then can destroy it
+      // or if we can store token in DB mark them as blacklisted so that same token can't be used agaian
+      return true;
+    } catch (error) {
+      console.error('Error during logout:', error.message);
+      throw new ErrorHandler(500, error.message, error);
+    }
+  }
 
 }
 

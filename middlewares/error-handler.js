@@ -20,11 +20,13 @@ module.exports.error = (err, req, res, next) => {
   res.status(responseStatus)
   .setHeader('Content-Type', 'application/json')
   .json({
-    status: 'error',
+    status: responseStatus,
+    data: null,
     message: message || 'Internal server error.',
-    data: [],
+    error: null,
   });
 };
+
 
 class ErrorHandler extends Error {
   constructor(statusCode, message, actualError = null) {
