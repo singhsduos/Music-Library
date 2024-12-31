@@ -1,10 +1,10 @@
 require('dotenv').config();
 require('express-async-errors');
+const cookie = require('cookie-parser');
+const config = require('config');
 const express = require('express');
 const morgan = require('morgan');
-const cookie = require('cookie-parser');
 const session = require('express-session');
-const config = require('config');
 
 const App = require('./app');
 const logger = require('./helpers/logger');
@@ -13,8 +13,9 @@ const sessionOpt = require('./utils/session');
 const { invalidPath, error, ErrorHandler } = require('./middlewares/error-handler');
 const { accessHeaderMiddleware } = require('./middlewares/accessHeader');
 
-const { PermissionController } = require('./controllers/permisssion.controller');
 const { AuthController } = require('./controllers/auth.controller');
+const { PermissionController } = require('./controllers/permisssion.controller');
+const { UserController } = require('./controllers/users.controller');
 
 
 global.logger = logger;
@@ -32,8 +33,9 @@ const middlewares = [
 ];
 
 const controllers = [
+  new AuthController(),
   new PermissionController(),
-  new AuthController()
+  new UserController()
 ];
 
 const errorHandlers = [invalidPath, error];

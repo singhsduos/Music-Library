@@ -17,6 +17,9 @@ const UserSchema = new mongoose.Schema({
         enum: ['Admin', 'Editor', 'Viewer'],
         default: 'Viewer'
     },
+}, 
+{
+  timestamps: true
 });
 
 UserSchema.pre('save', async function(next) {

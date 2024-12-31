@@ -17,7 +17,7 @@ class Handler {
 class AuthenticationHandler extends Handler {
     async handle(request) {
         if (!request.user) {
-            throw new ErrorHandler(401, "Unauthorized");
+            throw new ErrorHandler(401, "Unauthorized Access");
         }
         return super.handle(request);
     }
@@ -26,7 +26,6 @@ class AuthenticationHandler extends Handler {
 class AuthorizationHandler extends Handler {
     async handle(request) {
         if (request.user.role === 'Admin') {
-            console.log("dddddddd")
             return true;
         }
 
@@ -36,7 +35,7 @@ class AuthorizationHandler extends Handler {
             !permissions ||
             !permissions.permissions.get(request.route)?.includes(request.operation)
         ) {
-            throw new ErrorHandler(403, "Forbidden");
+            throw new ErrorHandler(401, "Unauthorized Access");
         }
 
         return super.handle(request);
