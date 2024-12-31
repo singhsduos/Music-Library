@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const config = require('config')
 const { ErrorHandler } = require('./error-handler')
-const JWTPRIVATEKEY = config.get('SECRETCONFIGURATION.JWTPRIVATEKEY')
+const JWTPRIVATEKEY = process.env.JWTPRIVATERESETKEY
 
 module.exports = {
   validateToken: async (req, res, next) => {

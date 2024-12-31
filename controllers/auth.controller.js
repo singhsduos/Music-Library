@@ -13,6 +13,7 @@ class AuthController {
 
   initRoutes() {
     this.router.post('/signup', this.signUpUser);
+    this.router.post('/login', this.signInUser);
   }
 
   async signUpUser(req, res, next) {
@@ -39,6 +40,30 @@ class AuthController {
           }
         );
       }
+      next(error);
+    }
+  }
+  async signInUser(req, res, next) {
+    try {
+      const { token } = await AuthService.signIn(req);
+      return res.status(200).json({
+        status: 200,
+        data: { token },
+        message: 'Login successful.',
+        error: null,
+      });
+    } catch (error) {
+      console.log('User Login error: ', error.message);
+
+      if (error instanceof ErrorHandler) {
+        return res.status(error.statusCode).json({
+          status: error.statusCode,
+          data: null,
+          message: error.message,
+          error: null,
+        });
+      }
+
       next(error);
     }
   }

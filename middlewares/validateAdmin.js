@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
 const config = require('config')
 const { ErrorHandler } = require('./error-handler')
-const JWTPRIVATEKEY = config.get('SECRETCONFIGURATION.JWTPRIVATEKEY')
 const { AuthUser } = require('../models/authUser.model')
+const JWTPRIVATEKEY = process.env.JWTPRIVATERESETKEY
 
 module.exports = {
   validateAdmin: async (req, res, next) => {

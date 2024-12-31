@@ -1,16 +1,13 @@
 {
   "SECRETCONFIGURATION": {
-     "JWTPRIVATEKEY": "Music-App-_sdmnbcscksncnsdc@#12fnsfnsY&",
-    "JWTPRIVATERESETKEY": "3sd%#fsr232!$%#yrtyezdev_secret",
     "MONGODB": {
-        "MONGO_URL": "mongodb+srv://ns9628491678:Ns@7268820306@dev-cluster.ynhoo.mongodb.net/?retryWrites=true&w=majority&appName=dev-cluster",
-        "DB_NAME": "Music-APP"
+        "MONGO_URL": "mongodb+srv://ns9628491678:Ns@7268820306@dev-cluster.ynhoo.mongodb.net/?retryWrites=true&w=majority&appName=dev-cluster"
     },
     "PORT": 3000
   },
   "CONFIGURATION": {
     "APIURL": "http://localhost:3000"
   },
-  "EXPIRYTIME": "30d",
+  "EXPIRYTIME": "1d",
   "RESETPASSWORDTOKENEXPIRYTIME": "10m"
 }

@@ -1,7 +1,9 @@
 const config = require('config')
-const { ErrorLog } = require('../models/errorLogs.model')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { User } = require('../models/user.model');
 const { ErrorHandler } = require('../middlewares/error-handler');
+const TokenExpiryTime = config.get("EXPIRYTIME")
 
 class AuthService {
   async signUp (req) {
@@ -29,6 +31,32 @@ class AuthService {
       return true;
     } catch (error) {
       console.error('Error initializing user:', error.message);
+      throw new ErrorHandler(error.statusCode || 500, error.message, error);
+    }
+  }
+  async signIn(req) {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      throw new ErrorHandler(400, `Bad Request, Reason: ${!email ? 'Missing email' : 'Missing password'}`);
+    }
+
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        throw new ErrorHandler(404, 'User not found.');
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        throw new ErrorHandler(400, 'Invalid password.');
+      }
+
+      const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWTPRIVATERESETKEY, { expiresIn: TokenExpiryTime });
+
+      return { token };
+    } catch (error) {
+      console.error('Error during login:', error.message);
       throw new ErrorHandler(error.statusCode || 500, error.message, error);
     }
   }
