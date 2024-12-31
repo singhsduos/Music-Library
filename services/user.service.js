@@ -60,6 +60,25 @@ class UserService {
         }
     }
 
+    async deleteUser(userId) {
+        try {
+            const user = await User.findById(userId);
+            if (!user) {
+                throw new ErrorHandler(404, 'User not found');
+            }
+            if (user.role === 'Admin') {
+                throw new ErrorHandler(403, 'Forbidden Access/Operation not allowed.');
+            }
+
+            await User.findByIdAndDelete(userId);
+
+            return true;
+        } catch (error) {
+            console.error('Error deleting user:', error.message);
+            throw new ErrorHandler(error.statusCode || 500, error.message, error);
+        }
+    }
+
 }
 
 
