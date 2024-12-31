@@ -1,0 +1,16 @@
+{
+  "SECRETCONFIGURATION": {
+    "JWTPRIVATEKEY": "Music-App-_sdmnbcscksncnsdc@#12fnsfnsY&",
+    "JWTPRIVATERESETKEY": "3sd%#fsr232!$%#yrtyezdev_secret",
+    "MONGODB": {
+        "MONGO_URL": "mongodb://10.0.3.5:27017/",
+        "DB_NAME": "SIS1318"
+    },
+    "PORT": 3000
+  },
+  "CONFIGURATION": {
+    "APIURL": "https://sis1318.uatsparxit.xyz/"
+  },
+  "EXPIRYTIME": "30d",
+  "RESETPASSWORDTOKENEXPIRYTIME": "10m"
+}
