@@ -2,7 +2,6 @@ const config = require('config')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models/user.model');
-const { ErrorHandler } = require('../middlewares/error-handler');
 const TokenExpiryTime = config.get("EXPIRYTIME")
 
 class AuthService {

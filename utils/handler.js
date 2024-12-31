@@ -1,9 +1,9 @@
-const { Permission } = require('../models/permission.model')
+const { Permission } = require('../models/permission.model');
 
 class Handler {
     setNext(handler) {
         this.nextHandler = handler;
-        return handler; 
+        return handler;
     }
 
     async handle(request) {
@@ -17,7 +17,7 @@ class Handler {
 class AuthenticationHandler extends Handler {
     async handle(request) {
         if (!request.user) {
-            throw new Error("Unauthorized");
+            throw new ErrorHandler(401, "Unauthorized");
         }
         return super.handle(request);
     }
@@ -25,13 +25,20 @@ class AuthenticationHandler extends Handler {
 
 class AuthorizationHandler extends Handler {
     async handle(request) {
+        if (request.user.role === 'Admin') {
+            console.log("dddddddd")
+            return true;
+        }
+
         const permissions = await Permission.findOne({ role: request.user.role });
+
         if (
             !permissions ||
             !permissions.permissions.get(request.route)?.includes(request.operation)
         ) {
-            throw new Error("Forbidden");
+            throw new ErrorHandler(403, "Forbidden");
         }
+
         return super.handle(request);
     }
 }

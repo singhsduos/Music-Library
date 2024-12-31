@@ -28,6 +28,8 @@ const authenticateRequest = async (req, res, next) => {
             throw new ErrorHandler(401, 'Unauthorized Access, User does not exist.');
         }
 
+        req.user = user;
+        
         const request = {
             user,
             route: req.originalUrl,

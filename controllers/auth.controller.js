@@ -2,7 +2,6 @@ const config = require('config');
 const express = require('express');
 const { AuthService } = require('../services/auth.service');
 const authenticateRequest = require("../middlewares/authenticateRequest");
-const { ErrorHandler } = require('../middlewares/error-handler');
 const { validateToken } = require('../middlewares/validateToken');
 
 class AuthController {
