@@ -16,6 +16,7 @@ const { accessHeaderMiddleware } = require('./middlewares/accessHeader');
 const { AlbumController } = require('./controllers/album.controller');
 const { ArtistController } = require('./controllers/artist.controller');
 const { AuthController } = require('./controllers/auth.controller');
+const { FavoritesController } = require('./controllers/favorite.controller');
 const { PermissionController } = require('./controllers/permisssion.controller');
 const { UserController } = require('./controllers/users.controller');
 const { TrackController } = require('./controllers/track.controller');
@@ -39,6 +40,7 @@ const controllers = [
   new AlbumController(),
   new ArtistController(),
   new AuthController(),
+  new FavoritesController(),
   new PermissionController(),
   new UserController(),
   new TrackController()
