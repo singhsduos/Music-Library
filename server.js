@@ -18,6 +18,7 @@ const { ArtistController } = require('./controllers/artist.controller');
 const { AuthController } = require('./controllers/auth.controller');
 const { PermissionController } = require('./controllers/permisssion.controller');
 const { UserController } = require('./controllers/users.controller');
+const { TrackController } = require('./controllers/track.controller');
 
 
 global.logger = logger;
@@ -39,7 +40,8 @@ const controllers = [
   new ArtistController(),
   new AuthController(),
   new PermissionController(),
-  new UserController()
+  new UserController(),
+  new TrackController()
 ];
 
 const errorHandlers = [invalidPath, error];

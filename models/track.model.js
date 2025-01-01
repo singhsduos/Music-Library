@@ -13,6 +13,16 @@ const TrackSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    artist_id: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Artist',
+        required: true
+    },
+    album_id: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Album',
+        required: true
+    }
 },
 {
     timestamps: true
