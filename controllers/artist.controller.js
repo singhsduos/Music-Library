@@ -14,6 +14,7 @@ class ArtistController {
         this.router.get('/:id', authenticateRequest, this.getArtistById);
         this.router.post('/add-artist', authenticateRequest, this.addArtist);
         this.router.put('/:id', authenticateRequest, this.updateArtist);
+        this.router.delete('/:id', authenticateRequest, this.deleteArtist);
     }
 
     async getArtists(req, res, next) {
@@ -110,6 +111,30 @@ class ArtistController {
                         "error": null
                     }
                 );
+            }
+            next(error);
+        }
+    }
+
+    async deleteArtist(req, res, next) {
+        try {
+            const { artistId, artistName } = await ArtistService.deleteArtist(req);
+
+            res.status(200).json({
+                status: 200,
+                data: { artist_id: artistId },
+                message: `Artist: ${artistName} deleted successfully.`,
+                error: null,
+            });
+        } catch (error) {
+            console.error('Error deleting artist:', error.message);
+            if (error instanceof ErrorHandler) {
+                return res.status(error.statusCode).json({
+                    status: error.statusCode,
+                    data: null,
+                    message: error.message,
+                    error: null,
+                });
             }
             next(error);
         }

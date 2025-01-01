@@ -120,6 +120,30 @@ class ArtistService {
         }
     }
 
+    async deleteArtist(req) {
+        try {
+            const { id: artistId } = req.params;
+
+            if (!mongoose.Types.ObjectId.isValid(artistId)) {
+                throw new ErrorHandler(400, 'Bad Request: Invalid Artist ID.');
+            }
+
+            const artist = await Artist.findById(artistId);
+            if (!artist) {
+                throw new ErrorHandler(404, 'Artist not found.');
+            }
+
+            const artistName = artist.name;
+
+            await Artist.findByIdAndDelete(artistId);
+
+            return { artistId, artistName };
+        } catch (error) {
+            console.error('Error deleting artist:', error.message);
+            throw new ErrorHandler(error.statusCode || 500, error.message, error);
+        }
+    }
+
 }
 
 exports.ArtistService = new ArtistService();
