@@ -30,17 +30,23 @@ class AuthorizationHandler extends Handler {
         }
 
         const permissions = await Permission.findOne({ role: request.user.role });
+        if (!permissions || !(permissions.permissions instanceof Map)) {
+            throw new ErrorHandler(401, "Unauthorized Access");
+        }
 
-        if (
-            !permissions ||
-            !permissions.permissions.get(request.route)?.includes(request.operation)
-        ) {
+        const splitRoute = request.route.split("/");
+        const baseRoute = `/${splitRoute[1]}`;
+
+        const allowedOperations = permissions.permissions.get(baseRoute);
+
+        if (!allowedOperations || !allowedOperations.includes(request.operation)) {
             throw new ErrorHandler(401, "Unauthorized Access");
         }
 
         return super.handle(request);
     }
 }
+
 
 module.exports = {
     Handler,
