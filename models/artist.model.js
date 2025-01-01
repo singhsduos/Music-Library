@@ -6,8 +6,8 @@ const ArtistSchema = new mongoose.Schema({
         required: true
     },
     grammy: {
-        type: Boolean,
-        default: false
+        type: Number,
+        default: 0
     },
     hidden: {
         type: Boolean,

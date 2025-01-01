@@ -10,9 +10,61 @@ class ArtistController {
     }
 
     initRoutes() {
+        this.router.get('/', authenticateRequest, this.getArtists);
+        this.router.get('/:id', authenticateRequest, this.getArtistById);
         this.router.post('/add-artist', authenticateRequest, this.addArtist);
     }
 
+    async getArtists(req, res, next) {
+        try {
+            const artists = await ArtistService.getArtists(req);
+            res.status(200).json({
+                status: 200,
+                data: artists,
+                message: "Artists retrieved successfully.",
+                error: null,
+            });
+        } catch (error) {
+            console.log('Error fetching artists: ', error.message);
+            if (error instanceof ErrorHandler) {
+                return res.status(error.statusCode).json(
+                    {
+                        "status": error.statusCode,
+                        "data": null,
+                        "message": error.message,
+                        "error": null
+                    }
+                );
+            }
+            next(error);
+        }
+    }
+
+    async getArtistById(req, res, next) {
+        try {
+            const artist = await ArtistService.getArtistById(req);
+            res.status(200).json({
+                status: 200,
+                data: artist,
+                message: "Artist retrieved successfully.",
+                error: null,
+            });
+        } catch (error) {
+            console.log('Error fetching artist: ', error.message);
+            if (error instanceof ErrorHandler) {
+                return res.status(error.statusCode).json(
+                    {
+                        "status": error.statusCode,
+                        "data": null,
+                        "message": error.message,
+                        "error": null
+                    }
+                );
+            }
+            next(error);
+        }
+    }
+    
     async addArtist(req, res, next) {
         try {
             const result = await ArtistService.addArtist(req);
