@@ -19,10 +19,10 @@ class AuthService {
 
       const isAdmin = (await User.countDocuments()) === 0;
       const role = isAdmin ? 'Admin' : 'Viewer';
-
+      const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new User({
         email,
-        password,
+        password:hashedPassword,
         role,
       });
 

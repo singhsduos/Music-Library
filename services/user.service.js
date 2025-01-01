@@ -1,4 +1,5 @@
 const config = require('config')
+const bcrypt = require('bcryptjs');
 const { User } = require('../models/user.model');
 
 class UserService {
@@ -46,9 +47,10 @@ class UserService {
                 throw new ErrorHandler(409, 'Email already exists');
             }
 
+            const hashedPassword = await bcrypt.hash(password, 10);
             const newUser = new User({
                 email,
-                password,
+                password:hashedPassword ,
                 role
             });
 
@@ -75,6 +77,36 @@ class UserService {
             return true;
         } catch (error) {
             console.error('Error deleting user:', error.message);
+            throw new ErrorHandler(error.statusCode || 500, error.message, error);
+        }
+    }
+
+    async updatePassword(req) {
+        try {
+            const { old_password, new_password } = req.body;
+            this.checkRequiredFields(req.body, ['old_password', 'new_password']);
+
+            if (!old_password || !new_password) {
+                throw new ErrorHandler(400, 'Bad Request: Missing required fields (old_password or new_password).');
+            }
+
+            const userId = req.user.userId;
+            const user = await User.findById(userId);
+            if (!user) {
+                throw new ErrorHandler(404, 'User not found');
+            }
+
+            const isMatch = await bcrypt.compare(old_password, user.password);
+            if (!isMatch) {
+                throw new ErrorHandler(403, 'Forbidden Access: Old password is incorrect');
+            }
+            const hashedPassword = await bcrypt.hash(new_password, 10);
+            user.password = hashedPassword;
+
+            await user.save();
+            return true;
+        } catch (error) {
+            console.error('Error updating password:', error.message);
             throw new ErrorHandler(error.statusCode || 500, error.message, error);
         }
     }

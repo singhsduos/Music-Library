@@ -3,6 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { UserService } = require('../services/user.service');
 const authenticateRequest = require("../middlewares/authenticateRequest");
+const { validateToken } = require('../middlewares/validateToken');
+
 
 class UserController {
     constructor() {
@@ -15,6 +17,7 @@ class UserController {
         this.router.get('/', authenticateRequest, this.getUsers);
         this.router.post('/add-user', authenticateRequest, this.addUser);
         this.router.delete('/:id', authenticateRequest, this.deleteUser);
+        this.router.put('/update-password', validateToken, this.updatePassword);
     }
 
     async getUsers(req, res, next) {
@@ -95,6 +98,31 @@ class UserController {
                         "error": null
                     }
                 );
+            }
+            next(error);
+        }
+    }
+
+    async updatePassword(req, res, next) {
+        try {
+
+            const response = await UserService.updatePassword(req);
+
+            res.status(204).json({
+                status: 204,
+                data: null,
+                message: 'User updated password successfully',
+                error: null
+            });
+        } catch (error) {
+            console.log('Error Updating Password: ', error.message);
+            if (error instanceof ErrorHandler) {
+                return res.status(error.statusCode).json({
+                    status: error.statusCode,
+                    data: null,
+                    message: error.message,
+                    error: null
+                });
             }
             next(error);
         }
