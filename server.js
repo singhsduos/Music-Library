@@ -13,6 +13,7 @@ const sessionOpt = require('./utils/session');
 const { invalidPath, error, ErrorHandler } = require('./middlewares/error-handler');
 const { accessHeaderMiddleware } = require('./middlewares/accessHeader');
 
+const { AlbumController } = require('./controllers/album.controller');
 const { ArtistController } = require('./controllers/artist.controller');
 const { AuthController } = require('./controllers/auth.controller');
 const { PermissionController } = require('./controllers/permisssion.controller');
@@ -34,6 +35,7 @@ const middlewares = [
 ];
 
 const controllers = [
+  new AlbumController(),
   new ArtistController(),
   new AuthController(),
   new PermissionController(),

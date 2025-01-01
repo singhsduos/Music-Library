@@ -13,6 +13,12 @@ const AlbumSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    artist_id: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Artist',
+        required: true
+    }
+
 },
 {
     timestamps: true
