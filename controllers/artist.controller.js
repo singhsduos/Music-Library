@@ -13,6 +13,7 @@ class ArtistController {
         this.router.get('/', authenticateRequest, this.getArtists);
         this.router.get('/:id', authenticateRequest, this.getArtistById);
         this.router.post('/add-artist', authenticateRequest, this.addArtist);
+        this.router.put('/:id', authenticateRequest, this.updateArtist);
     }
 
     async getArtists(req, res, next) {
@@ -84,6 +85,31 @@ class ArtistController {
                     message: error.message,
                     error: null,
                 });
+            }
+            next(error);
+        }
+    }
+
+    async updateArtist(req, res, next) {
+        try {
+            await ArtistService.updateArtist(req);
+            res.status(204).json({
+                status: 204,
+                data: null,
+                message: 'Artist updated successfully.',
+                error: null,
+            });
+        } catch (error) {
+            console.log('Error updating artist: ', error.message);
+            if (error instanceof ErrorHandler) {
+                return res.status(error.statusCode).json(
+                    {
+                        "status": error.statusCode,
+                        "data": null,
+                        "message": error.message,
+                        "error": null
+                    }
+                );
             }
             next(error);
         }

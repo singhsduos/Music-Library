@@ -84,6 +84,42 @@ class ArtistService {
         }
     }
 
+    async updateArtist(req) {
+        try {
+            const { id: artistId } = req.params;
+            const updateData = req.body;
+
+            const allowedFields = ['name', 'grammy', 'hidden'];
+            const invalidFields = Object.keys(updateData).filter(field => !allowedFields.includes(field));
+
+            if (!mongoose.Types.ObjectId.isValid(artistId)) {
+                throw new ErrorHandler(400, 'Bad Request: Invalid Artist ID.');
+            }
+
+            if (invalidFields.length > 0) {
+                throw new ErrorHandler(400, `Bad Request: Invalid fields provided - ${invalidFields.join(', ')}`);
+            }
+
+            if (!Object.keys(updateData).length) {
+                throw new ErrorHandler(400, 'Bad Request: No data provided for update.');
+            }
+
+            const updatedArtist = await Artist.findByIdAndUpdate(
+                artistId,
+                { $set: updateData },
+                { new: true, runValidators: true }
+            );
+
+            if (!updatedArtist) {
+                throw new ErrorHandler(404, 'Artist not found.');
+            }
+            return true;
+        } catch (error) {
+            console.error('Error updating artist:', error.message);
+            throw new ErrorHandler(error.statusCode || 500, error.message, error);
+        }
+    }
+
 }
 
 exports.ArtistService = new ArtistService();
